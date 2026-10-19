@@ -1,0 +1,8 @@
+{
+  "name": "GPM (virtual maps)",
+  "description": "module APP",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

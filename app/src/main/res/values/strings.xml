@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GPM (virtual maps)</string>
+    <string name="xposed_description">GPM (virtual maps) — Virtual GPS spoofing module for LSPosed (modern libxposed API 102)</string>
+</resources>

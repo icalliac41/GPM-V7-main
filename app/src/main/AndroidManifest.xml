@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <permission
+        android:name="com.gpm.virtual.permission.INTERNAL"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.gpm.virtual.permission.INTERNAL" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        tools:targetApi="31" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_CONNECT"
+        tools:targetApi="31" />
+
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <queries>
+        <package android:name="com.gojek.partner" />
+        <package android:name="com.gojek.app" />
+        <package android:name="com.grabtaxi.driver2" />
+        <package android:name="com.grab.driver" />
+        <package android:name="com.grabtaxi.passenger" />
+        <package android:name="com.google.android.apps.maps" />
+        <package android:name="com.google.android.gms" />
+        <package android:name="com.waze" />
+        <package android:name="com.shopee.driver.id" />
+        <package android:name="com.maxim.driver" />
+        <package android:name="com.indriver.driver" />
+        <package android:name="sinet.startup.inDriver" />
+        <package android:name="com.lalamove.driver" />
+        <package android:name="com.sicepat.kurir" />
+        <package android:name="id.anteraja.satria" />
+        <package android:name="com.gpm.virtual" />
+        <package android:name="com.gpm.virtual.mchaji" />
+    </queries>
+
+    <application
+        android:name=".GpmApplication"
+        android:allowBackup="true"
+        android:forceQueryable="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:description="@string/xposed_description"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyApplication">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/xposed_description" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="93" />
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/xposed_scope" />
+
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".data.provider.LocationConfigProvider"
+            android:authorities="com.gpm.virtual.provider;com.gpm.virtual.mchaji.provider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
+        <!-- ⭐ PROVIDER BARU: Untuk baca Sortir tanpa cache -->
+        <provider
+            android:name=".data.provider.SortirConfigProvider"
+            android:authorities="com.gpm.virtual.sortir;com.gpm.virtual.mchaji.sortir"
+            android:exported="true"
+            android:grantUriPermissions="false" />
+
+        <service
+            android:name=".service.MockLocationService"
+            android:foregroundServiceType="location"
+            android:exported="false" />
+
+        <service
+            android:name=".service.FloatingOverlayService"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.REBOOT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".data.ConfigRequestReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.gpm.virtual.permission.INTERNAL"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.gpm.virtual.SORTIR_CONFIG_REQUEST" />
+                <action android:name="com.gpm.virtual.CANCEL_CONFIG_REQUEST" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.SpoofPersistReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.gpm.virtual.permission.INTERNAL"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.gpm.virtual.ACTION_PERSIST_SPOOF_REQUEST" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.SortirPrefsSyncReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.gpm.virtual.permission.INTERNAL"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.gpm.virtual.SYNC_SORTIR_PREFS" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.SortirBootWriter"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>

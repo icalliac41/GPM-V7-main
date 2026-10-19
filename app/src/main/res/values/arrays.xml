@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="xposed_scope">
+        <!-- ⭐ Target utama — WAJIB ada -->
+        <item>com.grabtaxi.driver2</item>
+        <item>com.grab.driver</item>
+
+        <!-- Gojek -->
+        <item>com.gojek.partner</item>
+        <item>com.gojek.app</item>
+
+        <!-- Maps -->
+        <item>com.google.android.apps.maps</item>
+        <item>com.google.android.gms</item>
+    </string-array>
+</resources>
